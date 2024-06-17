@@ -12,7 +12,7 @@ image = cv2.imread(image_path)
 
 # Check if the image was loaded successfully
 if image is None:
-    print(f"Failed to load image from {image_path}")
+    print("Failed to load image from {image_path}")
 else:
     image = ensure_Binary_Image(image)
 
