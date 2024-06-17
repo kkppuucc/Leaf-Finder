@@ -4,3 +4,4 @@ from .Find_First_black_pixel import find_first_black_pixel
 from .Is_Valid_Pixel import is_valid_pixel
 from .Freemans_Chain_Code import freeman_chain_code
 from .Ensure_Binary_Image import ensure_Binary_Image
+from .Differential_Code import compute_differential_code

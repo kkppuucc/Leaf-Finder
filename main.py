@@ -1,6 +1,6 @@
 import os
 import cv2
-from Tools import find_first_black_pixel, freeman_chain_code, ensure_Binary_Image
+from Tools import find_first_black_pixel, freeman_chain_code, ensure_Binary_Image, compute_differential_code
 from Tools.Freeman_visual import count_histogram
 
 # Construct absolute path to the image
@@ -18,18 +18,19 @@ else:
 
     # Find the start pixel
     start_pixel = find_first_black_pixel(image)
-    chain_code_result = None
+    chain_code = None
 
     if start_pixel is not None:
         print("First black pixel:", start_pixel)
 
         # Compute the Freeman chain code
-        chain_code_result = freeman_chain_code(image, start_pixel)
-        print("Freeman Chain Code:", chain_code_result)
+        chain_code = freeman_chain_code(image, start_pixel)
+        print("Freeman Chain Code:", chain_code)
     else:
         print("No starting pixel found.")
 
-
-hist_count = count_histogram(chain_code_result)
+chain_code = [0, 0, 0, 6, 6, 6, 4, 4, 4, 2, 2, 2]
+differential_code = compute_differential_code(chain_code)
+hist_count = count_histogram(chain_code)
 for (key, count) in hist_count:
-   print(count, key)
+    print(count, key)
