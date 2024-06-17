@@ -29,7 +29,6 @@ else:
     else:
         print("No starting pixel found.")
 
-chain_code = [0, 0, 0, 6, 6, 6, 4, 4, 4, 2, 2, 2]
 differential_code = compute_differential_code(chain_code)
 hist_count = count_histogram(chain_code)
 for (key, count) in hist_count:
