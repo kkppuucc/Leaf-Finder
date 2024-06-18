@@ -1,41 +1,52 @@
 import mysql.connector
 from mysql.connector import Error
 
+
+import mysql.connector
+from mysql.connector import Error
+
 def connect_to_database():
-    connection = None  # Initialize connection variable
-    cursor = None  # Initialize cursor variable
     try:
         connection = mysql.connector.connect(
-            host='localhost',  # e.g., 'localhost'
+            host='localhost',
             port=3304,
-            database='swedish',  # e.g., 'swedish'
-            user='root',  # e.g., 'root'
-            password='iskambmw320'  # e.g., 'password'
+            database='swedish',
+            user='root',
+            password='iskambmw320'
         )
-
         if connection.is_connected():
-            db_info = connection.get_server_info()
-            print("Connected to MySQL Server version ", db_info)
             cursor = connection.cursor()
-            cursor.execute("SELECT DATABASE();")
-            record = cursor.fetchone()
-            print("You're connected to database: ", record)
-
-            # List all databases
-            cursor.execute("SHOW DATABASES;")
-            databases = cursor.fetchall()
-            print("Available databases:")
-            for db in databases:
-                print(db[0])
+            return connection, cursor
+        else:
+            print("Connection failed")
 
     except Error as e:
         print("Error while connecting to MySQL", e)
-    finally:
-        if cursor:
-            cursor.close()
-        if connection and connection.is_connected():
-            connection.close()
-            print("MySQL connection is closed")
+        return None, None
 
-if __name__ == '__main__':
-    connect_to_database()
+
+def insert_to_database(filename, freemansCode, histogram_count, connection, cursor):
+    sql = """
+    INSERT INTO leaf2files 
+    (fileID, freemansCode, count_0, count_1, count_2, count_3, count_4, count_5, count_6, count_7) 
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    """
+    values = (
+        filename,
+        freemansCode,
+        histogram_count[0],
+        histogram_count[1],
+        histogram_count[2],
+        histogram_count[3],
+        histogram_count[4],
+        histogram_count[5],
+        histogram_count[6],
+        histogram_count[7]
+    )
+
+    try:
+        cursor.execute(sql, values)
+        connection.commit()
+        print("Record inserted successfully into leaf2files table")
+    except Error as e:
+        print(f"Failed to insert record into MySQL table {e}")

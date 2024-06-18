@@ -1,7 +1,8 @@
 import os
 import cv2
-from Tools import find_first_black_pixel, freeman_chain_code, ensure_Binary_Image, compute_differential_code
-from Tools.Freeman_visual import count_histogram
+from Tools import find_first_black_pixel, freeman_chain_code, ensure_Binary_Image, compute_differential_code, \
+    connect_to_database
+from Tools.Freeman_visual import count_histogram, visualize_freeman_chain_code
 
 # Construct absolute path to the image
 script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -28,8 +29,9 @@ else:
         print("Freeman Chain Code:", chain_code)
     else:
         print("No starting pixel found.")
-
+visualize_freeman_chain_code(chain_code)
 differential_code = compute_differential_code(chain_code)
 hist_count = count_histogram(chain_code)
-for (key, count) in hist_count:
-    print(count, key)
+connection, cursor = connect_to_database()
+print(hist_count[0], hist_count[1])
+

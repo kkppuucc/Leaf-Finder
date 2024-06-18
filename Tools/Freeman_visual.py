@@ -44,13 +44,16 @@ def visualize_freeman_chain_code(chain_code):
     plt.show()
 
 
-def count_histogram(chain_code, debug=0):
+def count_histogram(chain_code, visualize=0):
     # Create a histogram and get the bin counts
     counts, bin_edges = np.histogram(chain_code, bins=8, range=(0, 8))
 
-    if debug == 1:
-        # Print the counts for each bin
-        for freemans_way in range(len(counts)):
-            print(f"Direction {freemans_way}: {counts[freemans_way]} times")
+    if (visualize):
+        # Plot the histogram
+        plt.hist(chain_code, bins=8, range=(0, 8))
+        plt.xlabel('Chain Code')
+        plt.ylabel('Frequency')
+        plt.title('Histogram of Freeman Chain Code')
+        plt.show()
 
-    return enumerate(counts)
+    return counts
