@@ -2,13 +2,16 @@ import cv2
 import numpy as np
 
 
-def ensure_Binary_Image(image):
+def ensure_binary_image(image, target_size=(500, 500)):
+    # Resize the image to the target size
+    resized_image = cv2.resize(image, target_size, interpolation=cv2.INTER_AREA)
+    threshold = 200
     # Ensure the image is binary
-    if image.shape[2] == 3:  # If it has 3 channels
-        gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        _, binary_image = cv2.threshold(gray_image, 127, 255, cv2.THRESH_BINARY)
+    if resized_image.shape[2] == 3:  # If it has 3 channels
+        gray_image = cv2.cvtColor(resized_image, cv2.COLOR_BGR2GRAY)
+        _, binary_image = cv2.threshold(gray_image, threshold, 255, cv2.THRESH_BINARY)
     else:
-        _, binary_image = cv2.threshold(image, 127, 255, cv2.THRESH_BINARY)
+        _, binary_image = cv2.threshold(resized_image, threshold, 255, cv2.THRESH_BINARY)
 
     # Invert the binary image
     binary_image = cv2.bitwise_not(binary_image)

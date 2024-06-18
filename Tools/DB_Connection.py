@@ -1,9 +1,9 @@
 import mysql.connector
 from mysql.connector import Error
 
-
 import mysql.connector
 from mysql.connector import Error
+
 
 def connect_to_database():
     try:
@@ -26,14 +26,16 @@ def connect_to_database():
 
 
 def insert_to_database(filename, freemansCode, histogram_count, connection, cursor):
+    histogram_count = [int(value) for value in histogram_count]
+    freeman = prepare_import_data(freemansCode)
     sql = """
     INSERT INTO leaf2files 
-    (fileID, freemansCode, count_0, count_1, count_2, count_3, count_4, count_5, count_6, count_7) 
+   (fileName, freemansCode, hist0, hist1, hist2, hist3, hist4, hist5, hist6, hist7)
     VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     """
     values = (
         filename,
-        freemansCode,
+        freeman,
         histogram_count[0],
         histogram_count[1],
         histogram_count[2],
@@ -50,3 +52,9 @@ def insert_to_database(filename, freemansCode, histogram_count, connection, curs
         print("Record inserted successfully into leaf2files table")
     except Error as e:
         print(f"Failed to insert record into MySQL table {e}")
+
+
+def prepare_import_data(int_array):
+    str_list = [str(code) for code in int_array]
+    string = ', '.join(str_list)
+    return string
