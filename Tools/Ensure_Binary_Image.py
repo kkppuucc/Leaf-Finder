@@ -2,9 +2,14 @@ import cv2
 import numpy as np
 
 
-def ensure_binary_image(image, target_size=(500, 500)):
-    # Resize the image to the target size
-    resized_image = cv2.resize(image, target_size, interpolation=cv2.INTER_AREA)
+def ensure_binary_image(image):
+    target_size = (500, 500)
+    if image.size != target_size:
+        # Resize the image to the target size
+        resized_image = cv2.resize(image, target_size, interpolation=cv2.INTER_AREA)
+    else:
+        resized_image = image
+
     threshold = 200
     # Ensure the image is binary
     if resized_image.shape[2] == 3:  # If it has 3 channels

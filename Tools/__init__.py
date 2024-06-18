@@ -6,3 +6,4 @@ from .Freemans_Chain_Code import freeman_chain_code
 from .Ensure_Binary_Image import ensure_binary_image
 from .Differential_Code import compute_differential_code
 from .Image_finder import convert_tiff_to_jpg
+from .Load_all_files_from_folder import load_files_from_folder_convert_to_binary
