@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-import cv2
 import numpy as np
 
 
@@ -48,7 +47,7 @@ def count_histogram(chain_code, visualize=0):
     # Create a histogram and get the bin counts
     counts, bin_edges = np.histogram(chain_code, bins=8, range=(0, 8))
 
-    if (visualize):
+    if visualize:
         # Plot the histogram
         plt.hist(chain_code, bins=8, range=(0, 8))
         plt.xlabel('Chain Code')
@@ -56,4 +55,13 @@ def count_histogram(chain_code, visualize=0):
         plt.title('Histogram of Freeman Chain Code')
         plt.show()
 
-    return counts
+    # Calculate total count
+    count_total = np.sum(counts)
+
+    # Calculate weights as proportions of each direction count
+    weights = counts / count_total
+
+    # Round weights to three decimal places
+    weights = np.round(weights, 3)
+
+    return counts, weights

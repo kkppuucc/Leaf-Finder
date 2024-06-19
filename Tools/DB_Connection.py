@@ -1,6 +1,4 @@
 import mysql.connector
-from mysql.connector import Error
-
 import mysql.connector
 from mysql.connector import Error
 
@@ -25,13 +23,14 @@ def connect_to_database():
         return None, None
 
 
-def insert_to_database(filename, freemansCode, histogram_count, connection, cursor):
+def insert_to_database(filename, freemansCode, histogram_count, weights, connection, cursor):
     histogram_count = [int(value) for value in histogram_count]
     freeman = prepare_import_data(freemansCode)
+
     sql = """
     INSERT INTO leaf2files 
-   (fileName, freemansCode, hist0, hist1, hist2, hist3, hist4, hist5, hist6, hist7)
-    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+   (fileName, freemansCode, hist0, hist1, hist2, hist3, hist4, hist5, hist6, hist7, weight_0, weight_1, weight_2, weight_3, weight_4, weight_5, weight_6, weight_7)
+    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     """
     values = (
         filename,
@@ -43,7 +42,15 @@ def insert_to_database(filename, freemansCode, histogram_count, connection, curs
         histogram_count[4],
         histogram_count[5],
         histogram_count[6],
-        histogram_count[7]
+        histogram_count[7],
+        weights[0],
+        weights[1],
+        weights[2],
+        weights[3],
+        weights[4],
+        weights[5],
+        weights[6],
+        weights[7]
     )
 
     try:

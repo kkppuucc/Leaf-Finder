@@ -9,6 +9,7 @@ from Tools.Image_finder import convert_jpg_to_binary_and_copy
 file_name = 'l2nr039.jpg'
 un_processed = 'UnProcessed'
 processed = 'Processed'
+
 # Construct absolute path to the image
 script_dir = os.path.dirname(os.path.abspath(__file__))
 un_processed_path = os.path.join(script_dir, un_processed)
@@ -19,8 +20,18 @@ processed_path = os.path.join(script_dir, processed)
 file_path = os.path.join(script_dir, un_processed)
 image_path = os.path.join(script_dir, processed, file_name)
 
-# convert_jpg_to_binary_and_copy(un_processed_path, processed_path, 1)
-# load_files_from_folder_convert_to_binary(file_path)
+
+# Uncomment this if you need to parse all file from a folder
+# # List all files in the folder
+# image_files = os.listdir(processed_path)
+# # convert_jpg_to_binary_and_copy(un_processed_path, processed_path, 1)
+# # load_files_from_folder_convert_to_binary(file_path)
+# for file_name in image_files:
+#     # Check if the file is a .jpg file
+#     if file_name.lower().endswith('.jpg'):
+#         # Construct absolute path to the image
+#         image_path = os.path.join(processed_path, file_name)
+
 # Load the binary image
 image = cv2.imread(image_path)
 
@@ -51,10 +62,13 @@ visualize_freeman_chain_code(chain_code)
 differential_code = compute_differential_code(chain_code)
 
 # Count Freeman code from histogram
-hist_count = count_histogram(chain_code, 1)
+hist_count, weights = count_histogram(chain_code, 1)
 
 # Initialise the DB
 connection, cursor = connect_to_database()
 
+# Find the most similar image
+find_similar(hist_count, connection, cursor)
+
 # Write into the DB
-insert_to_database(file_name, chain_code, hist_count, connection, cursor)
+insert_to_database(file_name, chain_code, hist_count, weights, connection, cursor)
